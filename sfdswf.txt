@@ -1,0 +1,32 @@
+Node - java -Dwebdriver.chrome.driver=chromedriver.exe -jar selenium-server-standalone-3.141.59.jar -role node –hub http://172.31.35.59:4444 -port 3345
+Hub - java -jar selenium-server-standalone-3.141.59.jar -role hub
+
+Window
+-------
+netstat -ano | findstr :4444
+taskkill /PID 11768 /F
+
+Linux
+------
+netstat -plten |grep java
+kill -9 <PID>
+
+Ubuntu - nohup java -Dwebdriver.chrome.driver=chromedriver -jar selenium-server-standalone-3.141.59.jar -role node -hub http://172.31.43.50:4444 -port 3256 &
+
+
+Ansible
+>>>>>>>
+---
+- hosts: selenium
+  become: yes
+  remote_user: praveen
+  tasks:
+  - name: Copy Config Directory
+    copy:
+      src: selenium-server-standalone-3.141.59.jar
+      dest: /home/praveen/
+      mode: 0755
+  
+  - name: "Run Java File"
+    ansible.builtin.shell: nohup java -jar /home/praveen/selenium-server-standalone-3.141.59.jar -role hub &
+
